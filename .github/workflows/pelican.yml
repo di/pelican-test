@@ -15,7 +15,7 @@ jobs:
     - name: Install pelican
       run: |
         python -m pip install -U pip setuptools wheel
-        python -m pip install --user pelican
+        python -m pip install --user pelican markdown
     - name: Build content
       run: python -m pelican content -o docs
     - name: Commit files
