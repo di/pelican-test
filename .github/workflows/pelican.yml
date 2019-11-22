@@ -19,9 +19,9 @@ jobs:
     - name: Build content
       run: |
         python -m pelican content
-        cd content
     - name: Commit files
       run: |
+        cd output
         git init
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
@@ -31,6 +31,7 @@ jobs:
       env:
         GIT_DEPLOY_KEY: ${{ secrets.GIT_DEPLOY_KEY }}
       run: |
+        cd output
         mkdir -p ~/.ssh
         eval "$(ssh-agent -s)"
         ssh-keyscan github.com >> ~/.ssh/known_hosts
