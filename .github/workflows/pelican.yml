@@ -28,10 +28,10 @@ jobs:
       env:
         GIT_DEPLOY_KEY: ${{ secrets.GIT_DEPLOY_KEY }}
       run: |
-        mkdir /root/.ssh
-        ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts && \
-        echo "${GIT_DEPLOY_KEY}" > /root/.ssh/id_rsa && \
-        chmod 400 /root/.ssh/id_rsa
+        mkdir -p ~/.ssh
+        eval "$(ssh-agent -s)"
+        ssh-keyscan github.com >> ~/.ssh/known_hosts
+        ssh-add - <<< "${GIT_DEPLOY_KEY}
     - name: Push commit
       run: |
         git remote add deploy "git@github.com:${GITHUB_REPOSITORY}.git"
