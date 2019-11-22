@@ -23,10 +23,15 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git commit -am "[action] Automated deployment"
-    - name: Push commit
+    - name: Acquite deploy key
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        MY_SECRET_NAME: ${{ secrets.MY_SECRET_NAME }}
+        GIT_DEPLOY_KEY: ${{ secrets.GIT_DEPLOY_KEY }}
       run: |
-        echo "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-        git push "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:master
+        mkdir /root/.ssh
+        ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts && \
+        echo "${GIT_DEPLOY_KEY}" > /root/.ssh/id_rsa && \
+        chmod 400 /root/.ssh/id_rsa
+    - name: Push commit
+      run: |
+        git remote add deploy "git@github.com:${GITHUB_REPOSITORY}.git"
+        git push deploy master
