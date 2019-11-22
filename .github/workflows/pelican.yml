@@ -1,6 +1,9 @@
-name: CI
+name: Publish
 
-on: [push]
+on: 
+  push:
+    branches:    
+      - master
 
 jobs:
   build:
@@ -19,12 +22,10 @@ jobs:
         python -m pip install -U pip setuptools wheel
         python -m pip install --user pelican
         python -m pelican content -o docs
-    - name: Commit files
+    - name: Commit and push files
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git commit -am "[action] Automated deployment"
-    - name: Push to gh-pages
-      run: |
         remote_repo="https://${GITHUB_ACTOR}:${secrets.GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
         git push "${remote_repo}" HEAD:gh-pages --follow-tags
