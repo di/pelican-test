@@ -32,7 +32,6 @@ jobs:
         eval "$(ssh-agent -s)"
         ssh-keyscan github.com >> ~/.ssh/known_hosts
         ssh-add - <<< "${GIT_DEPLOY_KEY}"
-        ssh -T git@github.com
     - name: Push commit
       run: |
         git remote add deploy "git@github.com:${GITHUB_REPOSITORY}.git"
