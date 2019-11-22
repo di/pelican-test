@@ -16,8 +16,8 @@ jobs:
       run: echo ${MY_SECRET_NAME} ${GITHUB_TOKEN}
     - name: Pelican build
       run: |
-        pip install -U pip setuptools wheel
-        pip install pelican
+        python -m install -U pip setuptools wheel
+        python -m pip install pelican
         pelican content -o docs
     - name: Commit files
       run: |
