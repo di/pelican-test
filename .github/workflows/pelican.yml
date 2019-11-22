@@ -35,4 +35,5 @@ jobs:
     - name: Push commit
       run: |
         git remote add deploy "git@github.com:${GITHUB_REPOSITORY}.git"
+        git remote -v
         git push deploy HEAD:master
