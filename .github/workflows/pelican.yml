@@ -1,0 +1,25 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Test
+      run: echo ${secrets.MY_SECRET_NAME}
+    - name: Pelican build
+      run: |
+        pelican content -o docs
+    - name: Commit files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -am "[action] Automated deployment"
+    - name: Push to gh-pages
+      run: |
+        remote_repo="https://${GITHUB_ACTOR}:${secrets.GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+        git push "${remote_repo}" HEAD:gh-pages --follow-tags
