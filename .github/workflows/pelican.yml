@@ -24,7 +24,7 @@ jobs:
         git config --local user.name "GitHub Action"
         git add .
         git commit -am "[action] Automated deployment"
-    - name: Acquite deploy key
+    - name: Acquire deploy key
       env:
         GIT_DEPLOY_KEY: ${{ secrets.GIT_DEPLOY_KEY }}
       run: |
@@ -32,6 +32,7 @@ jobs:
         eval "$(ssh-agent -s)"
         ssh-keyscan github.com >> ~/.ssh/known_hosts
         ssh-add - <<< "${GIT_DEPLOY_KEY}"
+        ssh -Tv git@github.com || true
     - name: Push commit
       run: |
         git remote add deploy "git@github.com:${GITHUB_REPOSITORY}.git"
