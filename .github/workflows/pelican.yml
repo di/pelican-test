@@ -10,7 +10,10 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Test
-      run: echo ${secrets.MY_SECRET_NAME}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        MY_SECRET_NAME: ${{ secrets.MY_SECRET_NAME }} 
+      run: echo ${MY_SECRET_NAME} ${GITHUB_TOKEN}
     - name: Pelican build
       run: |
         pelican content -o docs
