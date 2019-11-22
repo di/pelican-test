@@ -18,7 +18,7 @@ jobs:
       run: |
         python -m pip install -U pip setuptools wheel
         python -m pip install --user pelican
-        pelican content -o docs
+        python -m pelican content -o docs
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"
