@@ -17,9 +17,12 @@ jobs:
         python -m pip install -U pip setuptools wheel
         python -m pip install --user pelican markdown
     - name: Build content
-      run: python -m pelican content -o docs
+      run: |
+        python -m pelican content
+        cd content
     - name: Commit files
       run: |
+        git init
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
@@ -35,4 +38,4 @@ jobs:
         git remote add deploy "git@github.com:${GITHUB_REPOSITORY}.git"
         git remote -v
         ssh -Tv git@github.com || true
-        git push deploy HEAD:master
+        git push deploy HEAD:gh-pages
